@@ -1,22 +1,15 @@
 <?php
-// Data dummy mahasiswa (array asosiatif)
-$mahasiswa = [
-    [
-        "nama" => "Bayu Pratama",
-        "npm" => "22312001",
-        "jurusan" => "Manajemen Informatika"
-    ],
-    [
-        "nama" => "Andi Setiawan",
-        "npm" => "22312002",
-        "jurusan" => "Manajemen Informatika"
-    ],
-    [
-        "nama" => "Citra Lestari",
-        "npm" => "22312003",
-        "jurusan" => "Manajemen Informatika"
-    ]
-];
+include 'koneksi.php';
+
+try {
+  $query = "SELECT * FROM mahasiswa";
+  $statement = $koneksi->query($query);
+
+  // Mengambil semua data
+  $mahasiswa = $statement->fetchAll(PDO::FETCH_ASSOC);
+} catch (PDOException $e) {
+  die("Query gagal: " . $e->getMessage());
+}
 
 // Memasukkan template header
 include 'templates/header.php';
@@ -24,7 +17,7 @@ include 'templates/header.php';
 
 <div class="container py-5">
   <h1 class="mb-4">Data Mahasiswa</h1>
-  
+
   <table class="table table-striped table-bordered">
     <thead class="table-dark">
       <tr>
@@ -39,6 +32,7 @@ include 'templates/header.php';
       <?php foreach ($mahasiswa as $mhs) : ?>
         <tr>
           <th scope="row"><?= $i; ?></th>
+
           <td><?= htmlspecialchars($mhs["nama"]); ?></td>
           <td><?= htmlspecialchars($mhs["npm"]); ?></td>
           <td><?= htmlspecialchars($mhs["jurusan"]); ?></td>
